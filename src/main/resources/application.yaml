@@ -38,7 +38,7 @@ spring:
     config:
       server:
         native:
-          search-locations: file:${CONFIG_REPO_PATH:../config-repo}
+          search-locations: file:${CONFIG_REPO_PATH:../configs-repo}
 
 ---
 # ── Git profile: Docker Compose and Production ───────
@@ -51,7 +51,7 @@ spring:
       server:
         git:
           uri: ${CONFIG_GIT_URI}
-          default-label: ${CONFIG_GIT_BRANCH:main}
+          default-label: ${CONFIG_GIT_BRANCH:master}
           clone-on-start: true
           username: ${CONFIG_GIT_USERNAME:}
           password: ${CONFIG_GIT_PASSWORD:}
