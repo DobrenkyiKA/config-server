@@ -5,21 +5,14 @@ spring:
   application:
     name: config-server
 
-  cloud:
-    config:
-      server:
-        native:
-          search-locations: file:${CONFIG_REPO_PATH:../config-repo}
-        git:
-          uri: ${CONFIG_GIT_URI:}
-          default-label: ${CONFIG_GIT_BRANCH:main}
-          clone-on-start: true
-          username: ${CONFIG_GIT_USERNAME:}
-          password: ${CONFIG_GIT_PASSWORD:}
-
 eureka:
   client:
-    enabled: false
+    service-url:
+      defaultZone: http://${EUREKA_HOST:localhost}:${EUREKA_PORT:8761}/eureka/
+    register-with-eureka: true
+    fetch-registry: false
+  instance:
+    prefer-ip-address: true
 
 management:
   endpoints:
@@ -32,5 +25,33 @@ management:
 
 logging:
   level:
-    com.kdob: DEBUG
+    com.interviewprep: DEBUG
     org.springframework.cloud.config: DEBUG
+
+---
+# ── Native profile: local dev on host machine ────────
+spring:
+  config:
+    activate:
+      on-profile: native
+  cloud:
+    config:
+      server:
+        native:
+          search-locations: file:${CONFIG_REPO_PATH:../config-repo}
+
+---
+# ── Git profile: Docker Compose and Production ───────
+spring:
+  config:
+    activate:
+      on-profile: git
+  cloud:
+    config:
+      server:
+        git:
+          uri: ${CONFIG_GIT_URI}
+          default-label: ${CONFIG_GIT_BRANCH:main}
+          clone-on-start: true
+          username: ${CONFIG_GIT_USERNAME:}
+          password: ${CONFIG_GIT_PASSWORD:}
