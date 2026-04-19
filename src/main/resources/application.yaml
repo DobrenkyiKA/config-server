@@ -4,6 +4,9 @@ server:
 spring:
   application:
     name: config-server
+  devtools:
+    restart:
+      enabled: false
 
 eureka:
   client:
